@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <template id="package_label_customer_template"
+              inherit_id="stock.label_package_template_view">
+      <xpath expr="." position="replace">
+        <t t-foreach="docs" t-as="package">
+          <t t-translation="off">
+^XA
+                            <!-- LOGO IF YOU WANT -->
+^FO640,110
+^GFA,<!-- YOU PUT IT HERE, OR YOU DELETE THE SECTION -->
+^FS
+
+                            <!-- CUSTOMER NAME -->
+^FO560,40
+^A0R,70,60^FD<t t-out="package.partner_id.name or 'N/A'"/>^FS
+
+                            <!-- ADDRESS -->
+                            <t t-if="package.partner_id.street">
+^FO500,40
+^A0R,50,40^FD<t t-out="package.partner_id.street"/>^FS
+                            </t>
+
+                            <!-- CITY + ZIP -->
+                            <t t-if="package.partner_id.city or package.partner_id.zip">
+^FO440,40
+^A0R,50,40^FD<t t-out="(package.partner_id.zip or '') + ' ' + (package.partner_id.city or '')"/>^FS
+                            </t>
+
+                            <!-- PHONE -->
+                            <t t-if="package.partner_id.phone or package.partner_id.mobile">
+^FO370,40
+^A0R,50,40^FDΤηλ: <t t-out="package.partner_id.phone or package.partner_id.mobile"/>^FS
+                            </t>
+                            
+                            <!-- INTERNAL NOTES -->
+                            <t t-if="package.partner_id.comment">
+^FO310,40
+^A0R,50,40^FDΜεταφορική: <t t-out="(package.partner_id.comment or '').striptags()[:80]"/>^FS
+                            </t>
+
+                            <!-- BARCODE -->
+^FO100,220^BY5
+^BCR,180,Y,N,N
+^FD<t t-out="package.name"/>^FS
+^XZ
+          </t>
+        </t>
+      </xpath>
+    </template>
+
+  </data>
+</odoo>
